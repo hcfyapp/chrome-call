@@ -85,6 +85,7 @@ describe( 'chromeCall' , function () {
       } );
       chromeCall( 'storage.local.remove' )
         .then( function ( value ) {
+          expect( Array.isArray( value ) ).toBe( true );
           expect( value ).toEqual( [ 'x' , 'y' , 'z' ] );
           done();
         } , function () {

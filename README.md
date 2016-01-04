@@ -8,6 +8,12 @@
 
 A really simple way to call the original chrome javascript API and return a Promise.
 
+## Install
+
+```
+npm i -S chrome-call
+```
+
 ## Usage
 
 When you do:
@@ -24,7 +30,7 @@ var promise = new Promise(function(resolve,reject) {
 });
 ```
 
-Then with "chrome call":
+It's equal to:
 
 ```js
 var promise = chromeCall('storage.local.get','key');
@@ -32,9 +38,22 @@ var promise = chromeCall('storage.local.get','key');
 
 That's really simple, right?
 
+### Multiple arguments in callback
+
+Most of chrome API only have one argument in callback, but someone not, such as [chrome.hid.receive](https://developer.chrome.com/apps/hid#method-receive). In this situation, the value of promise will be an (real) Array:
+
+```js
+chromeCall('hid.receive',connectionId)
+  .then(function(args){
+    Array.isArray(args); // true
+    var reportId = args[0];
+    var data = args[1];
+  });
+```
+
 ### Scope
 
-The default function `chromeCall` search function on `window.chrome`, but you can use different scope:
+The global `chromeCall` search function on `window.chrome`, but you can use different scope:
 
 ```js
 var local = chromeCall.scope('storage.local'); // or chromeCall.scope(chrome.storage.local)
