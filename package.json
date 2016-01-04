@@ -1,0 +1,23 @@
+{
+  "name": "chrome-call",
+  "version": "0.0.0",
+  "description": "A really simple way to call the original chrome javascript API and return a Promise.",
+  "main": "./chrome-call.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmk123/promised-chrome"
+  },
+  "bugs": {
+    "url": "https://github.com/lmk123/promised-chrome/issues"
+  },
+  "keywords": [
+    "chrome",
+    "ext",
+    "extension",
+    "app",
+    "promise"
+  ],
+  "author": "Milk Lee <me@limingkai.cn> (http://www.limingkai.cn/)",
+  "license": "MIT",
+  "homepage": "https://github.com/lmk123/promised-chrome"
+}
