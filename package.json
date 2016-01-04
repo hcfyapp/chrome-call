@@ -1,14 +1,14 @@
 {
   "name": "chrome-call",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A really simple way to call the original chrome javascript API and return a Promise.",
   "main": "./chrome-call.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lmk123/promised-chrome"
+    "url": "git+https://github.com/lmk123/chrome-call"
   },
   "bugs": {
-    "url": "https://github.com/lmk123/promised-chrome/issues"
+    "url": "https://github.com/lmk123/chrome-call/issues"
   },
   "keywords": [
     "chrome",
@@ -19,5 +19,5 @@
   ],
   "author": "Milk Lee <me@limingkai.cn> (http://www.limingkai.cn/)",
   "license": "MIT",
-  "homepage": "https://github.com/lmk123/promised-chrome"
+  "homepage": "https://github.com/lmk123/chrome-call"
 }
