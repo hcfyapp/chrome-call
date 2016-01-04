@@ -1,5 +1,11 @@
 # chrome call
 
+[![Build Status](https://img.shields.io/travis/lmk123/chrome-call/master.svg?style=flat-square)](https://travis-ci.org/lmk123/chrome-call)
+[![Coverage Status](https://img.shields.io/coveralls/lmk123/chrome-call/master.svg?style=flat-square)](https://coveralls.io/github/lmk123/chrome-call?branch=master)
+[![dependencies Status](https://img.shields.io/david/lmk123/chrome-call.svg?style=flat-square)](https://david-dm.org/lmk123/chrome-call)
+[![devDependencies Status](https://img.shields.io/david/dev/lmk123/chrome-call.svg?style=flat-square)](https://david-dm.org/lmk123/chrome-call#info=devDependencies)
+[![NPM Version](https://img.shields.io/npm/v/chrome-call.svg?style=flat-square)](https://www.npmjs.com/package/chrome-call)
+
 A really simple way to call the original chrome javascript API and return a Promise.
 
 ## Usage
