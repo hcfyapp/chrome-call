@@ -10,6 +10,23 @@
   "bugs": {
     "url": "https://github.com/lmk123/chrome-call/issues"
   },
+  "scripts": {
+    "test": "karma start"
+  },
+  "devDependencies": {
+    "es6-promise": "^3.0.2",
+    "phantomjs": "^1.9.18",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.14",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "karma-safari-launcher": "^0.1.1",
+    "karma-coverage": "^0.5.3",
+    "karma-coveralls": "^1.1.2"
+  },
   "keywords": [
     "chrome",
     "ext",
