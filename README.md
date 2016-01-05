@@ -20,11 +20,11 @@ When you do:
 
 ```js
 var promise = new Promise(function(resolve,reject) {
-  chrome.storage.local.get('key',function(value) {
+  chrome.storage.local.get('key',function(items) {
     if(chrome.runtime.lastError){
       reject(chrome.runtime.lastError);
     }else{
-      resolve(value);
+      resolve(items);
     }
   });
 });
@@ -40,10 +40,12 @@ That's really simple, right?
 
 ### Multiple arguments in callback
 
-Most of chrome API only have one argument in callback, but someone not, such as [chrome.hid.receive](https://developer.chrome.com/apps/hid#method-receive). In this situation, the value of promise will be an (real) Array:
+Most of chrome API only has zero or one argument in callback, but someone not, such as [chrome.hid.receive](https://developer.chrome.com/apps/hid#method-receive).
+
+In this situation, pass `true` as the first argument, then the value of promise will be an (real) Array:
 
 ```js
-chromeCall('hid.receive',connectionId)
+chromeCall(true,'hid.receive',connectionId)
   .then(function(args){
     Array.isArray(args); // true
     var reportId = args[0];

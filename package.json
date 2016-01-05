@@ -1,6 +1,6 @@
 {
   "name": "chrome-call",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A really simple way to call the original chrome javascript API and return a Promise.",
   "main": "./chrome-call.js",
   "repository": {

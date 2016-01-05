@@ -8,8 +8,8 @@
     root[ 'chromeCall' ] = factory();
   }
 })( this , function () {
-  var slice = Array.prototype.slice ,
-    runtime = chrome.runtime;
+  'use strict';
+  var runtime = chrome.runtime;
 
   /**
    * 根据 base 对象返回指定路径的栈
@@ -45,11 +45,35 @@
    * @returns {Function}
    */
   function scope( base ) {
-    return function ( fnPath /*, ...args*/ ) {
+    /**
+     * 调用原本的 chrome api 并返回一个 Promise
+     * @param {Boolean} [returnArray] - 当函数的第一个值是 true 时，则 Promise 会返回一个数组，包含 callback 的所有参数
+     * @param {String} fnPath - 原本的 chrome api 的路径，相对于 chrome，如 storage.local.get
+     * @returns {Promise}
+     */
+    return function ( /*returnArray , fnPath , ...args*/ ) {
+      // inline copy arguments, see https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
+      var length = arguments.length ,
+        argumentsArray = [];
+
+      for ( var i = 0 ; i < length ; i += 1 ) {
+        argumentsArray[ i ] = arguments[ i ];
+      }
+
+      var returnArray = argumentsArray.shift() ,
+        fnPath;
+
+      if ( typeof returnArray === 'boolean' ) {
+        fnPath = argumentsArray.shift();
+      } else {
+        fnPath = returnArray;
+        returnArray = false;
+      }
+
       // Step 1: find the function which need to be call
       var paths = pathStack( fnPath , base );
 
-      var args = slice.call( arguments , 1 );
+      var args = argumentsArray;
       return new Promise( function ( resolve , reject ) {
         // Step 2: inject callback
         args.push( function () {
@@ -59,7 +83,18 @@
             return;
           }
 
-          resolve( arguments.length <= 1 ? arguments[ 0 ] : slice.call( arguments , 0 ) );
+          if ( returnArray ) {
+            var length = arguments.length ,
+              argumentsArray = [];
+
+            for ( var i = 0 ; i < length ; i += 1 ) {
+              argumentsArray[ i ] = arguments[ i ];
+            }
+
+            resolve( argumentsArray );
+          } else {
+            resolve( arguments[ 0 ] );
+          }
         } );
 
         // Step 3: call function with it's original "this"

@@ -46,31 +46,17 @@ describe( 'chromeCall' , function () {
 
   } );
 
-  describe( '调用的 chrome api' , function () {
+  describe( '调用 chrome api 时' , function () {
     beforeEach( function () {
-      spyOn( chrome.storage.local , 'remove' );
+      spyOn( chrome.storage.local , 'remove' ).and.callFake( function ( cb ) {
+        cb( 'x' , 'y' , 'z' );
+      } );
     } );
 
-    it( '若没有返回参数则 resolve 函数的参数为零' , function ( done ) {
-      chrome.storage.local.remove.and.callFake( function ( cb ) {
-        cb();
-      } );
-      chromeCall( 'storage.local.remove' )
-        .then( function ( x ) {
-          expect( x ).toBeUndefined();
-          done();
-        } , function () {
-          fail( '没有进入 resolve 分支' );
-          done();
-        } );
-    } );
-
-    it( '若只返回了一个参数则 resolve 函数的参数为一且值为那个参数' , function ( done ) {
-      chrome.storage.local.remove.and.callFake( function ( cb ) {
-        cb( 'x' );
-      } );
+    it( '默认情况下，promise 只返回第一个参数' , function ( done ) {
       chromeCall( 'storage.local.remove' )
         .then( function ( value ) {
+          expect( Array.isArray( value ) ).toBe( false );
           expect( value ).toBe( 'x' );
           done();
         } , function () {
@@ -79,11 +65,8 @@ describe( 'chromeCall' , function () {
         } );
     } );
 
-    it( '若返回了一个两个或更多参数则 resolve 函数的参数为一个真实的数组，包含那些参数' , function ( done ) {
-      chrome.storage.local.remove.and.callFake( function ( cb ) {
-        cb( 'x' , 'y' , 'z' );
-      } );
-      chromeCall( 'storage.local.remove' )
+    it( '但如果第一个参数是 true，则返回一个数组' , function ( done ) {
+      chromeCall( true , 'storage.local.remove' )
         .then( function ( value ) {
           expect( Array.isArray( value ) ).toBe( true );
           expect( value ).toEqual( [ 'x' , 'y' , 'z' ] );
