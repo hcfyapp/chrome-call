@@ -14,17 +14,13 @@
   /**
    * 根据 base 对象返回指定路径的栈
    * @param {String} path - 属性路径，可用点（.）分隔
-   * @param {String|Object} base - 开始查找的那个对象
+   * @param {Object} base - 开始查找的那个对象
    * @returns {*[]}
    *
    * @example
    *   pathStack('document.body',window) 应该返回 [window,window.document,window.document.body]
    */
   function pathStack( path , base ) {
-    if ( typeof base === 'string' ) {
-      base = pathStack( base , chrome ).pop();
-    }
-
     var keys = path.split( '.' ) ,
       paths = [ base ];
 
@@ -41,10 +37,12 @@
 
   /**
    * 根据基础对象返回一个函数，此函数会以基础对象为起点寻找指定属性并调用
-   * @param base
+   * @param {String|Object} base
    * @returns {Function}
    */
   function scope( base ) {
+    var baseObj = typeof base === 'string' ? pathStack( base , chrome ).pop() : base;
+
     /**
      * 调用原本的 chrome api 并返回一个 Promise
      * @param {Boolean} [returnArray] - 当函数的第一个值是 true 时，则 Promise 会返回一个数组，包含 callback 的所有参数
@@ -71,7 +69,7 @@
       }
 
       // Step 1: find the function which need to be call
-      var paths = pathStack( fnPath , base );
+      var paths = pathStack( fnPath , baseObj );
 
       var args = argumentsArray;
       return new Promise( function ( resolve , reject ) {
