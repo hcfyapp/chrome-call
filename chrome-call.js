@@ -22,17 +22,17 @@
    */
   function pathStack( path , base ) {
     var keys = path.split( '.' ) ,
-      paths = [ base ];
+      stack = [ base ];
 
     keys.forEach( function ( key , i ) {
-      var val = paths[ i ][ key ];
+      var val = stack[ i ][ key ];
       if ( !val ) {
         throw new Error( 'Cannot find "' + path + '".' );
       }
-      paths.push( val );
+      stack.push( val );
     } );
 
-    return paths;
+    return stack;
   }
 
   /**
@@ -69,7 +69,7 @@
       }
 
       // Step 1: find the function which need to be call
-      var paths = pathStack( fnPath , baseObj );
+      var stack = pathStack( fnPath , baseObj );
 
       var args = argumentsArray;
       return new Promise( function ( resolve , reject ) {
@@ -96,7 +96,7 @@
         } );
 
         // Step 3: call function with it's original "this"
-        paths.pop().apply( paths.pop() , args );
+        stack.pop().apply( stack.pop() , args );
       } );
     };
   }
