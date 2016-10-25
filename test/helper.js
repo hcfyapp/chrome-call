@@ -1,4 +1,4 @@
-ES6Promise.polyfill();
+ES6Promise.polyfill()
 window.chrome = {
-  runtime : {}
-};
+  runtime: {}
+}

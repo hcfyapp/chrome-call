@@ -1,0 +1,18 @@
+{
+  "globals": {
+    "chrome": false,
+    "ES6Promise": false,
+    "chromeCall": false
+  },
+  "env": {
+    "browser": true,
+    "amd": true,
+    "jasmine": true
+  },
+  "plugins": [
+    "html"
+  ],
+  "extends": [
+    "standard"
+  ]
+}
