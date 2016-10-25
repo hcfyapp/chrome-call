@@ -9,9 +9,6 @@
     "amd": true,
     "jasmine": true
   },
-  "plugins": [
-    "html"
-  ],
   "extends": [
     "standard"
   ]

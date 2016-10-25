@@ -1,6 +1,6 @@
 {
   "name": "chrome-call",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A really simple way to call the original chrome javascript API and return a Promise.",
   "main": "./chrome-call.js",
   "repository": {
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "karma start",
-    "lint": "eslint --ignore-pattern '/dist/' \"**/*.{js,vue}\""
+    "lint": "eslint --ignore-pattern '/coverage/' \"**/*.js\""
   },
   "devDependencies": {
     "es6-promise": "4.0.5",
