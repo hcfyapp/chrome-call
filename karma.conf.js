@@ -9,9 +9,17 @@ module.exports = function (config) {
       'test/test.js'
     ],
     preprocessors: {
-      'chrome-call.js': ['coverage']
+      'chrome-call.js': ['rollup', 'coverage']
     },
     reporters: ['progress', 'coverage'],
+    rollupPreprocessor: {
+			plugins: [
+				require('rollup-plugin-buble')(),
+			],
+			format: 'iife',
+			moduleName: 'chromeCall',
+			sourceMap: 'inline',
+		},
     coverageReporter: {
       dir: 'coverage',
       reporters: [

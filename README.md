@@ -1,4 +1,4 @@
-# chrome call
+# chrome-call
 
 [![Build Status](https://img.shields.io/travis/Selection-Translator/chrome-call/master.svg?style=flat-square)](https://travis-ci.org/Selection-Translator/chrome-call)
 [![Coverage Status](https://img.shields.io/coveralls/Selection-Translator/chrome-call/master.svg?style=flat-square)](https://coveralls.io/github/Selection-Translator/chrome-call?branch=master)
@@ -6,12 +6,39 @@
 [![devDependencies Status](https://img.shields.io/david/dev/Selection-Translator/chrome-call.svg?style=flat-square)](https://david-dm.org/Selection-Translator/chrome-call?type=dev)
 [![NPM Version](https://img.shields.io/npm/v/chrome-call.svg?style=flat-square)](https://www.npmjs.com/package/chrome-call)
 
-A really simple way to call the original chrome javascript API and return a Promise.
+Call the original chrome javascript API and return a Promise.
 
 ## Install
 
+### Use with Webpack
+
+If you build your project with webpack, then you can install chrome-call from npm:
+
 ```
-npm i -S chrome-call
+npm install chrome-call
+```
+
+then you can import it in your project:
+
+```js
+// es6 
+import { call, scope } from 'chrome-call'
+
+// commonjs
+const { call, scope } = require('chrome-call')
+```
+
+### Use with &lt;script&gt;
+
+Download chrome-call.js from [unpkg](https://unpkg.com/chrome-call)([min version](https://unpkg.com/chrome-call/dist/chrome-call.min.js)), then reference it in your html:
+
+```html
+<script src="path/to/chrome-call.js"></script>
+<!-- now you will get a global variable named chromeCall -->
+<sciprt>
+  var call = chromeCall.call
+  var scope = chromeCall.scope
+</sciprt>
 ```
 
 ## Usage
@@ -19,8 +46,8 @@ npm i -S chrome-call
 When you do:
 
 ```js
-var promise = new Promise(function (resolve, reject) {
-  chrome.storage.local.get('key', function (items) {
+const promise = new Promise((resolve, reject) => {
+  chrome.storage.local.get('key', items => {
     if(chrome.runtime.lastError){
       reject(chrome.runtime.lastError)
     } else {
@@ -33,7 +60,9 @@ var promise = new Promise(function (resolve, reject) {
 It's equal to:
 
 ```js
-var promise = chromeCall('storage.local.get', 'key')
+import { call } from 'chrome-call'
+
+const promise = call('storage.local.get', 'key')
 ```
 
 That's really simple, right?
@@ -45,21 +74,28 @@ Most of chrome API only has zero or one argument in callback, but someone not, s
 In this situation, pass `true` as the first argument, then the value of promise will be an __real__ Array:
 
 ```js
-chromeCall(true, 'hid.receive', connectionId)
-  .then(function (args) {
+import { call } from 'chrome-call'
+
+call(true, 'hid.receive', connectionId)
+  .then(args => {
     Array.isArray(args) // true
-    var reportId = args[0]
-    var data = args[1]
+    const reportId = args[0]
+    const data = args[1]
   })
 ```
 
 ### Scope
 
-The global `chromeCall` search function on `window.chrome`, but you can use different scope:
+The `call` method searches function on `window.chrome`, but you can use different scope:
 
 ```js
-var local = chromeCall.scope('storage.local') // or chromeCall.scope(chrome.storage.local)
-var promise = local('get', 'key')
+import { scope } from 'chrome-call'
+
+const callLocal = scope('storage.local') // or scope(chrome.storage.local)
+const promise = callLocal('get', 'key')
+
+const callHid = scope('hid') // or scope(chrome.hid)
+const promise2 = callHid(true, 'receive')
 ```
 
 ## License

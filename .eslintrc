@@ -4,9 +4,12 @@
     "ES6Promise": false,
     "chromeCall": false
   },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
   "env": {
-    "browser": true,
-    "amd": true,
+    "node": true,
     "jasmine": true
   },
   "extends": [

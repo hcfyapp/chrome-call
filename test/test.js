@@ -19,7 +19,7 @@ describe('chromeCall', function () {
     })
 
     it('若正常执行则 resolve promise', function (done) {
-      chromeCall('storage.local.remove', 'a', 'b')
+      chromeCall.call('storage.local.remove', 'a', 'b')
         .then(function (value) {
           expect(value).toBe('c')
           done()
@@ -31,7 +31,7 @@ describe('chromeCall', function () {
 
     it('若执行时出错则会 reject promise', function (done) {
       chrome.runtime.lastError = 'hello error'
-      chromeCall('storage.local.remove', 'a', 'b')
+      chromeCall.call('storage.local.remove', 'a', 'b')
         .then(function () {
           fail('没有进入 reject 分支')
           chrome.runtime.lastError = null
@@ -52,7 +52,7 @@ describe('chromeCall', function () {
     })
 
     it('默认情况下，promise 只返回第一个参数', function (done) {
-      chromeCall('storage.local.remove')
+      chromeCall.call('storage.local.remove')
         .then(function (value) {
           expect(Array.isArray(value)).toBe(false)
           expect(value).toBe('x')
@@ -64,7 +64,7 @@ describe('chromeCall', function () {
     })
 
     it('但如果第一个参数是 true，则返回一个数组', function (done) {
-      chromeCall(true, 'storage.local.remove')
+      chromeCall.call(true, 'storage.local.remove')
         .then(function (value) {
           expect(Array.isArray(value)).toBe(true)
           expect(value).toEqual(['x', 'y', 'z'])
@@ -78,7 +78,7 @@ describe('chromeCall', function () {
 
   it('若找不到指定的路径则会报错', function () {
     expect(function () {
-      chromeCall('x.y.z')
+      chromeCall.call('x.y.z')
     }).toThrow()
   })
 
