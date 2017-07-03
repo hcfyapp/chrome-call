@@ -1,5 +1,5 @@
 module.exports = function (config) {
-  config.set({
+  const c = {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
@@ -13,13 +13,13 @@ module.exports = function (config) {
     },
     reporters: ['progress', 'coverage'],
     rollupPreprocessor: {
-			plugins: [
-				require('rollup-plugin-buble')(),
-			],
-			format: 'iife',
-			moduleName: 'chromeCall',
-			sourceMap: 'inline',
-		},
+      plugins: [
+        require('rollup-plugin-buble')()
+      ],
+      format: 'iife',
+      moduleName: 'chromeCall',
+      sourceMap: 'inline'
+    },
     coverageReporter: {
       dir: 'coverage',
       reporters: [
@@ -41,5 +41,12 @@ module.exports = function (config) {
     autoWatch: false,
     browsers: ['Chrome', 'PhantomJS'],
     singleRun: true
-  })
+  }
+
+  if (process.env.TRAVIS) {
+    c.reporters.push('coveralls')
+    c.browsers = ['PhantomJS']
+  }
+
+  config.set(c)
 }

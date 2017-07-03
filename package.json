@@ -15,7 +15,7 @@
   "scripts": {
     "test": "karma start",
     "build": "node build/build.js",
-    "lint": "eslint --ignore-pattern '/coverage/' \"**/*.js\"",
+    "lint": "eslint --ignore-pattern '/dist/' --ignore-pattern '/coverage/' '**/*.js'",
     "prepublish": "yarn run build"
   },
   "files": [

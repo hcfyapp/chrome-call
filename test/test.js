@@ -1,3 +1,5 @@
+/* eslint standard/no-callback-literal: 0 */
+
 chrome.storage = {
   local: {
     remove: function () {}

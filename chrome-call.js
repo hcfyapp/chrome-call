@@ -77,5 +77,3 @@ function scope (base) {
 const call = scope(chrome)
 
 export { scope, call }
-
-
