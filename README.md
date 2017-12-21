@@ -1,16 +1,10 @@
-# chrome-call
+# chrome-call [![Build Status](https://img.shields.io/travis/Selection-Translator/chrome-call/master.svg?style=flat-square)](https://travis-ci.org/Selection-Translator/chrome-call) [![Coverage Status](https://img.shields.io/coveralls/Selection-Translator/chrome-call/master.svg?style=flat-square)](https://coveralls.io/github/Selection-Translator/chrome-call?branch=master) [![NPM Version](https://img.shields.io/npm/v/chrome-call.svg?style=flat-square)](https://www.npmjs.com/package/chrome-call)
 
-[![Build Status](https://img.shields.io/travis/Selection-Translator/chrome-call/master.svg?style=flat-square)](https://travis-ci.org/Selection-Translator/chrome-call)
-[![Coverage Status](https://img.shields.io/coveralls/Selection-Translator/chrome-call/master.svg?style=flat-square)](https://coveralls.io/github/Selection-Translator/chrome-call?branch=master)
-[![dependencies Status](https://img.shields.io/david/Selection-Translator/chrome-call.svg?style=flat-square)](https://david-dm.org/Selection-Translator/chrome-call)
-[![devDependencies Status](https://img.shields.io/david/dev/Selection-Translator/chrome-call.svg?style=flat-square)](https://david-dm.org/Selection-Translator/chrome-call?type=dev)
-[![NPM Version](https://img.shields.io/npm/v/chrome-call.svg?style=flat-square)](https://www.npmjs.com/package/chrome-call)
-
-Call the original chrome javascript API and return a Promise.
+Call the [Chrome JavasScript APIs](https://developer.chrome.com/extensions/api_index) then return a Promise.
 
 ## Install
 
-### Use with Webpack
+### Use with webpack
 
 If you build your project with webpack, then you can install chrome-call from npm:
 
@@ -47,7 +41,7 @@ When you do:
 ```js
 const promise = new Promise((resolve, reject) => {
   chrome.storage.local.get('key', items => {
-    if(chrome.runtime.lastError){
+    if (chrome.runtime.lastError) {
       reject(chrome.runtime.lastError)
     } else {
       resolve(items)
@@ -64,7 +58,7 @@ const promise = chromeCall(chrome.storage.local, 'get', 'key')
 
 That's really simple, right?
 
-Some Chrome API methods has more than one arguments, then pass an array of params for the third argument:
+Some Chrome JavaScript API methods has more than one arguments, then pass an array of params for the third argument:
 
 ```js
 chromeCall(chrome.tabs, 'sendMessage', [tabId, message, options])
@@ -74,17 +68,16 @@ chromeCall(chrome.tabs, 'sendMessage', [tabId, message, options])
 
 Most of chrome API only has zero or one argument in callback, but someone not, such as [chrome.hid.receive](https://developer.chrome.com/apps/hid#method-receive).
 
-In this situation, pass `true` as the fourth argument, then the value of promise will be an __real__ Array:
+In this situation, pass `true` as the fourth argument, then the value of promise will be an **real** Array:
 
 ```js
 import chromeCall from 'chrome-call'
 
-chromeCall(chrome.hid, 'receive', connectionId, true)
-  .then(args => {
-    Array.isArray(args) // true
-    const reportId = args[0]
-    const data = args[1]
-  })
+chromeCall(chrome.hid, 'receive', connectionId, true).then(args => {
+  Array.isArray(args) // true
+  const reportId = args[0]
+  const data = args[1]
+})
 ```
 
 ## License
