@@ -21,11 +21,11 @@ npm install chrome-call
 then you can import it in your project:
 
 ```js
-// es6 
-import { call, scope } from 'chrome-call'
+// es6
+import chromeCall from 'chrome-call'
 
 // commonjs
-const { call, scope } = require('chrome-call')
+const chromeCall = require('chrome-call')
 ```
 
 ### Use with &lt;script&gt;
@@ -36,8 +36,7 @@ Download chrome-call.js from [unpkg](https://unpkg.com/chrome-call)([min version
 <script src="path/to/chrome-call.js"></script>
 <!-- now you will get a global variable named chromeCall -->
 <sciprt>
-  var call = chromeCall.call
-  var scope = chromeCall.scope
+  typeof chromeCall // function
 </sciprt>
 ```
 
@@ -60,42 +59,32 @@ const promise = new Promise((resolve, reject) => {
 It's equal to:
 
 ```js
-import { call } from 'chrome-call'
-
-const promise = call('storage.local.get', 'key')
+const promise = chromeCall(chrome.storage.local, 'get', 'key')
 ```
 
 That's really simple, right?
+
+Some Chrome API methods has more than one arguments, then pass an array of params for the third argument:
+
+```js
+chromeCall(chrome.tabs, 'sendMessage', [tabId, message, options])
+```
 
 ### Multiple arguments in callback
 
 Most of chrome API only has zero or one argument in callback, but someone not, such as [chrome.hid.receive](https://developer.chrome.com/apps/hid#method-receive).
 
-In this situation, pass `true` as the first argument, then the value of promise will be an __real__ Array:
+In this situation, pass `true` as the fourth argument, then the value of promise will be an __real__ Array:
 
 ```js
-import { call } from 'chrome-call'
+import chromeCall from 'chrome-call'
 
-call(true, 'hid.receive', connectionId)
+chromeCall(chrome.hid, 'receive', connectionId, true)
   .then(args => {
     Array.isArray(args) // true
     const reportId = args[0]
     const data = args[1]
   })
-```
-
-### Scope
-
-The `call` method searches function on `window.chrome`, but you can use different scope:
-
-```js
-import { scope } from 'chrome-call'
-
-const callLocal = scope('storage.local') // or scope(chrome.storage.local)
-const promise = callLocal('get', 'key')
-
-const callHid = scope('hid') // or scope(chrome.hid)
-const promise2 = callHid(true, 'receive')
 ```
 
 ## License
