@@ -6,9 +6,13 @@
     "noUnusedParameters": true,
     "target": "es5",
     "lib": [
-      "es2015"
+      "es2016",
+      "dom"
     ],
     "declaration": true
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ]
 }

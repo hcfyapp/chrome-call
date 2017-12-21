@@ -16,7 +16,7 @@
     "test": "karma start",
     "build": "node build/build.js",
     "lint": "tslint -p tsconfig.json -t verbose",
-    "prepublish": "yarn run build"
+    "prepublishOnly": "yarn run build"
   },
   "files": [
     "dist"

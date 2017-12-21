@@ -1,5 +1,5 @@
-export interface AnyFn {
-  (...args: any[]): any
+export interface AnyFn<T> {
+  (this: T, ...args: any[]): any
 }
 
 export default function<T extends object>(
@@ -25,6 +25,6 @@ export default function<T extends object>(
         resolve(results[0])
       }
     })
-    ;(object[methodName] as AnyFn).apply(object, args)
+    ;(object[methodName] as AnyFn<T>).apply(object, args)
   })
 }

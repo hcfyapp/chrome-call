@@ -6,7 +6,6 @@ fs.emptyDirSync(path.resolve(__dirname, '../dist'))
 
 // 编译 js
 const rollup = require('rollup')
-const buble = require('rollup-plugin-buble')
 const uglifyJS = require('uglify-js')
 const pkg = require('../package.json')
 
@@ -20,7 +19,7 @@ const banner = [
 
 rollup.rollup({
   entry: path.resolve(__dirname, '../chrome-call.js'),
-  plugins: [buble()]
+  plugins: []
 }).then(bundle => {
   // 输出 umd 格式
   const { code } = bundle.generate({
