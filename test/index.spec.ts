@@ -1,4 +1,7 @@
 import chromeCall from '../src/index'
+import { polyfill } from 'es6-promise'
+
+polyfill()
 
 // @ts-ignore
 window.chrome = {

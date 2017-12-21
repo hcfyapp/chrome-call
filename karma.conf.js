@@ -1,13 +1,15 @@
+
+require('fs-extra').emptyDirSync(require('path').resolve(__dirname, './coverage'))
+
 module.exports = function(config) {
   const c = {
     basePath: '',
     frameworks: ['jasmine', 'karma-typescript'],
     files: ['src/**/*.ts', 'test/**/*.ts'],
     preprocessors: {
-      'src/**/*.ts': ['karma-typescript', 'coverage'],
-      'test/**/*.ts': ['karma-typescript']
+      '**/*.ts': ['karma-typescript']
     },
-    reporters: ['progress', 'coverage', 'karma-typescript'],
+    reporters: ['progress', 'karma-typescript'],
     karmaTypescriptConfig: {
       compilerOptions: {
         lib: ['dom', 'es2015']
@@ -24,13 +26,16 @@ module.exports = function(config) {
   if (process.env.TRAVIS) {
     c.karmaTypescriptConfig.reports = {
       lcovonly: {
-        dir: 'coverage',
+        directory: 'coverage',
         subdirectory: 'lcov'
       }
     }
   } else {
     c.karmaTypescriptConfig.reports = {
-      html: 'coverage'
+      html: {
+        directory: 'coverage',
+        subdirectory: ''
+      }
     }
     c.browsers.push('Chrome')
   }

@@ -29,7 +29,6 @@
     "jasmine-core": "^2.5.2",
     "karma": "^1.3.0",
     "karma-chrome-launcher": "^2.0.0",
-    "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-typescript": "^3.0.9",
@@ -45,5 +44,6 @@
   "keywords": ["chrome", "ext", "extension", "app", "promise"],
   "author": "Milk Lee <me@limingkai.cn> (http://www.limingkai.cn/)",
   "license": "MIT",
-  "homepage": "https://github.com/lmk123/chrome-call"
+  "homepage": "https://github.com/lmk123/chrome-call",
+  "dependencies": {}
 }
