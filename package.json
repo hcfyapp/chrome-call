@@ -1,9 +1,11 @@
 {
   "name": "chrome-call",
   "version": "3.0.0",
-  "description": "A really simple way to call the original chrome javascript API and return a Promise.",
+  "description":
+    "A really simple way to call the original chrome javascript API and return a Promise.",
   "main": "dist/chrome-call.common.js",
   "module": "dist/chrome-call.esm.js",
+  "types": "dist/index.d.ts",
   "unpkg": "dist/chrome-call.js",
   "repository": {
     "type": "git",
@@ -18,9 +20,7 @@
     "lint": "tslint -p tsconfig.json -t verbose",
     "prepublishOnly": "npm run build"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "devDependencies": {
     "@types/chrome": "0.0.56",
     "@types/karma-jasmine": "0.0.29",
@@ -35,19 +35,14 @@
     "karma-typescript": "^3.0.9",
     "phantomjs-prebuilt": "^2.1.13",
     "rollup": "^0.52.3",
+    "rollup-plugin-typescript2": "^0.9.0",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.6.0",
     "tslint-config-standard": "^7.0.0",
     "typescript": "^2.6.2",
     "uglify-js": "^3.0.23"
   },
-  "keywords": [
-    "chrome",
-    "ext",
-    "extension",
-    "app",
-    "promise"
-  ],
+  "keywords": ["chrome", "ext", "extension", "app", "promise"],
   "author": "Milk Lee <me@limingkai.cn> (http://www.limingkai.cn/)",
   "license": "MIT",
   "homepage": "https://github.com/lmk123/chrome-call"

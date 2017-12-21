@@ -6,6 +6,7 @@ fs.emptyDirSync(path.resolve(__dirname, '../dist'))
 
 // 编译 js
 const rollup = require('rollup')
+const typescript = require('rollup-plugin-typescript2')
 const uglifyJS = require('uglify-js')
 const pkg = require('../package.json')
 
@@ -17,31 +18,42 @@ const banner = [
   ' */'
 ].join('\n')
 
-rollup.rollup({
-  entry: path.resolve(__dirname, '../chrome-call.js'),
-  plugins: []
-}).then(bundle => {
-  // 输出 umd 格式
-  const { code } = bundle.generate({
-    format: 'umd',
-    moduleName: 'chromeCall',
-    banner
+rollup
+  .rollup({
+    input: path.resolve(__dirname, '../src/index.ts'),
+    plugins: [
+      typescript({
+        tsconfig: 'tsconfig.build.json'
+      })
+    ]
   })
+  .then(bundle => {
+    // 输出 umd 格式
+    bundle
+      .generate({
+        format: 'umd',
+        name: 'chromeCall',
+        banner
+      })
+      .then(({ code }) => {
+        fs.writeFile(path.resolve(__dirname, '../dist/chrome-call.js'), code)
+        fs.writeFile(
+          path.resolve(__dirname, '../dist/chrome-call.min.js'),
+          uglifyJS.minify(code, { output: { comments: /^!/ } }).code
+        )
+      })
 
-  fs.writeFile(path.resolve(__dirname, '../dist/chrome-call.js'), code)
-  fs.writeFile(path.resolve(__dirname, '../dist/chrome-call.min.js'), uglifyJS.minify(code, { output: { comments: /^!/ } }).code)
+    // 输出 es 格式
+    bundle.write({
+      file: path.resolve(__dirname, '../dist/chrome-call.esm.js'),
+      format: 'es',
+      banner
+    })
 
-  // 输出 es 格式
-  bundle.write({
-    dest: path.resolve(__dirname, '../dist/chrome-call.esm.js'),
-    format: 'es',
-    banner
+    // 输出 cjs 格式
+    bundle.write({
+      file: path.resolve(__dirname, '../dist/chrome-call.common.js'),
+      format: 'cjs',
+      banner
+    })
   })
-
-  // 输出 cjs 格式
-  bundle.write({
-    dest: path.resolve(__dirname, '../dist/chrome-call.common.js'),
-    format: 'cjs',
-    banner
-  })
-})

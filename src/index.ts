@@ -1,4 +1,4 @@
-export interface AnyFn<T> {
+interface AnyFn<T> {
   (this: T, ...args: any[]): any
 }
 

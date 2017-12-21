@@ -1,4 +1,4 @@
-import chromeCall, { AnyFn } from '../src/index'
+import chromeCall from '../src/index'
 
 // @ts-ignore
 window.chrome = {
@@ -6,7 +6,7 @@ window.chrome = {
 }
 
 interface FakeObj {
-  method: (this: FakeObj, key: string, cb: AnyFn<void>) => void
+  method: (this: FakeObj, key: string, cb: (...args: any[]) => any) => void
 }
 
 const fakeObj: FakeObj = {
