@@ -10,6 +10,7 @@ interface FakeObj {
 }
 
 const fakeObj: FakeObj = {
+  // tslint:disable-next-line:no-empty
   method() {}
 }
 

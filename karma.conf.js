@@ -4,15 +4,13 @@ module.exports = function(config) {
     frameworks: ['jasmine', 'karma-typescript'],
     files: ['src/**/*.ts', 'test/**/*.ts'],
     preprocessors: {
-      '**/*.ts': ['karma-typescript']
+      'src/**/*.ts': ['karma-typescript', 'coverage'],
+      'test/**/*.ts': ['karma-typescript']
     },
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage', 'karma-typescript'],
     karmaTypescriptConfig: {
       compilerOptions: {
         lib: ['dom', 'es2015']
-      },
-      coverageOptions: {
-        exclude: /\.(d|spec|test|helper)\.ts/i
       }
     },
     port: 9876,
@@ -23,7 +21,17 @@ module.exports = function(config) {
     singleRun: true
   }
 
-  if (!process.env.TRAVIS) {
+  if (process.env.TRAVIS) {
+    c.karmaTypescriptConfig.reports = {
+      lcovonly: {
+        dir: 'coverage',
+        subdirectory: 'lcov'
+      }
+    }
+  } else {
+    c.karmaTypescriptConfig.reports = {
+      html: 'coverage'
+    }
     c.browsers.push('Chrome')
   }
 
