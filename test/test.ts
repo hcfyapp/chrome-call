@@ -14,50 +14,20 @@ const fakeObj: FakeObj = {
 }
 
 describe('chromeCall', () => {
-  describe('调用 chrome api 时', () => {
-    beforeEach(() => {
-      spyOn(fakeObj, 'method').and.callFake(function(key, cb) {
-        expect(this).toBe(fakeObj)
-        expect(key).toBe('a')
-        expect(typeof cb).toBe('function')
-        setTimeout(() => {
-          cb('a', 'b')
-        }, 100)
-      } as FakeObj['method'])
-    })
-
-    it('若正常执行则 resolve promise', done => {
-      chromeCall(fakeObj, 'method', ['a']).then(
-        value => {
-          expect(value).toBe('a')
-          done()
-        },
-        () => {
-          done.fail('没有进入 resolve 分支')
-        }
-      )
-    })
-
-    it('若执行时出错则会 reject promise', done => {
-      chrome.runtime.lastError = new Error('hello error')
-      chromeCall(fakeObj, 'method', 'a').then(
-        () => {
-          chrome.runtime.lastError = undefined
-          done.fail('没有进入 reject 分支')
-        },
-        error => {
-          expect(error.message).toBe('hello error')
-          chrome.runtime.lastError = undefined
-          done()
-        }
-      )
-    })
+  beforeEach(() => {
+    spyOn(fakeObj, 'method').and.callFake(function(key, cb) {
+      expect(this).toBe(fakeObj)
+      expect(key).toBe('a')
+      expect(typeof cb).toBe('function')
+      setTimeout(() => {
+        cb('a', 'b')
+      }, 100)
+    } as FakeObj['method'])
   })
 
-  it('默认情况下，promise 只返回第一个参数', done => {
-    chromeCall(fakeObj, 'method', 'a').then(
+  it('若正常执行则 resolve promise', done => {
+    chromeCall(fakeObj, 'method', ['a']).then(
       value => {
-        expect(Array.isArray(value)).toBe(false)
         expect(value).toBe('a')
         done()
       },
@@ -67,11 +37,26 @@ describe('chromeCall', () => {
     )
   })
 
-  it('但如果最后一个参数是 true，则返回一个数组', done => {
+  it('若执行时出错则会 reject promise', done => {
+    chrome.runtime.lastError = new Error('hello error')
+    chromeCall(fakeObj, 'method', 'a').then(
+      () => {
+        chrome.runtime.lastError = undefined
+        done.fail('没有进入 reject 分支')
+      },
+      error => {
+        expect(error.message).toBe('hello error')
+        chrome.runtime.lastError = undefined
+        done()
+      }
+    )
+  })
+
+  it('最后一个参数是 true，则返回一个数组', done => {
     chromeCall(fakeObj, 'method', ['a'], true).then(
       value => {
         expect(Array.isArray(value)).toBe(true)
-        expect(value).toEqual(['a', 'b', 'c'])
+        expect(value).toEqual(['a', 'b'])
         done()
       },
       () => {

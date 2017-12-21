@@ -1,51 +1,30 @@
-module.exports = function (config) {
+module.exports = function(config) {
   const c = {
     basePath: '',
-    frameworks: ['jasmine'],
-    files: [
-      'node_modules/es6-promise/dist/es6-promise.js',
-      'test/helper.js',
-      'chrome-call.js',
-      'test/test.js'
-    ],
+    frameworks: ['jasmine', 'karma-typescript'],
+    files: ['src/**/*.ts', 'test/**/*.ts'],
     preprocessors: {
-      'chrome-call.js': ['rollup', 'coverage']
+      '**/*.ts': ['karma-typescript']
     },
-    reporters: ['progress', 'coverage'],
-    rollupPreprocessor: {
-      plugins: [
-        require('rollup-plugin-buble')()
-      ],
-      format: 'iife',
-      moduleName: 'chromeCall',
-      sourceMap: 'inline'
-    },
-    coverageReporter: {
-      dir: 'coverage',
-      reporters: [
-        {
-          type: 'html',
-          subdir: function (browser) {
-            return 'html/' + browser.toLowerCase().split(/[ /-]/)[0]
-          }
-        },
-        {
-          type: 'lcov',
-          subdir: 'lcov'
-        }
-      ]
+    reporters: ['progress'],
+    karmaTypescriptConfig: {
+      compilerOptions: {
+        lib: ['dom', 'es2015']
+      },
+      coverageOptions: {
+        exclude: /\.(d|spec|test|helper)\.ts/i
+      }
     },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: false,
-    browsers: ['Chrome', 'PhantomJS'],
+    browsers: ['PhantomJS'],
     singleRun: true
   }
 
-  if (process.env.TRAVIS) {
-    c.reporters.push('coveralls')
-    c.browsers = ['PhantomJS']
+  if (!process.env.TRAVIS) {
+    c.browsers.push('Chrome')
   }
 
   config.set(c)

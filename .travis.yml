@@ -6,6 +6,7 @@ node_js:
 script:
   - npm run lint
   - npm test
+  - cat ./coverage/lcov/lcovonly | ./node_modules/coveralls/bin/coveralls.js
 
 notifications:
   email: false
