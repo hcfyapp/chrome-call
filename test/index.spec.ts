@@ -29,7 +29,7 @@ describe('chromeCall', () => {
   })
 
   it('若正常执行则 resolve promise', done => {
-    chromeCall(fakeObj, 'method', ['a']).then(
+    chromeCall(fakeObj, 'method', 'a').then(
       value => {
         expect(value).toBe('a')
         done()
@@ -55,8 +55,8 @@ describe('chromeCall', () => {
     )
   })
 
-  it('最后一个参数是 true，则返回一个数组', done => {
-    chromeCall(fakeObj, 'method', ['a'], true).then(
+  it('第一个参数是 true，则返回一个数组', done => {
+    chromeCall(true, fakeObj, 'method', 'a').then(
       value => {
         expect(Array.isArray(value)).toBe(true)
         expect(value).toEqual(['a', 'b'])

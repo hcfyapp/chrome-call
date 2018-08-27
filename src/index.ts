@@ -3,27 +3,28 @@ interface A {
 }
 
 function chromeCall<T extends A>(
+  returnArray: true,
   object: T,
   methodName: keyof T,
-  args: any | any[],
-  returnArray: true
+  ...args: any[]
 ): Promise<any[]>
 function chromeCall<T extends A>(
   object: T,
   methodName: keyof T,
-  args: any | any[],
-  returnArray?: boolean
+  ...args: any[]
 ): Promise<any>
 function chromeCall<T extends A>(
-  object: T,
-  methodName: keyof T,
-  args: any | any[] = [],
-  returnArray?: boolean
+  object: boolean | T,
+  methodName: T | keyof T,
+  ...args: any[]
 ) {
+  let returnArray: boolean
+  if (object === true) {
+    returnArray = object
+    object = methodName as T
+    methodName = args.shift() as keyof T
+  }
   return new Promise((resolve, reject) => {
-    if (!Array.isArray(args)) {
-      args = [args]
-    }
     args.push((...results: any[]) => {
       const { lastError } = chrome.runtime
       if (lastError) {
@@ -37,7 +38,8 @@ function chromeCall<T extends A>(
         resolve(results[0])
       }
     })
-    ;(object[methodName] as Function).apply(object, args)
+    // @ts-ignore
+    object[methodName].apply(object, args)
   })
 }
 

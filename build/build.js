@@ -23,23 +23,30 @@ rollup
     input: path.resolve(__dirname, '../src/index.ts'),
     plugins: [
       typescript({
-        tsconfig: 'tsconfig.build.json'
+        tsconfigOverride: {
+          exclude: ['test/**/*.ts']
+        }
       })
     ]
   })
   .then(bundle => {
     // 输出 umd 格式
+    const umdFilePath = path.resolve(__dirname, '../dist/chrome-call.js')
+    // 用 bundle.generate 不知为何得到的 result 是 undefined，
+    // 所以这里直接用了 write
     bundle
-      .generate({
+      .write({
+        file: umdFilePath,
         format: 'umd',
         name: 'chromeCall',
         banner
       })
-      .then(({ code }) => {
-        fs.writeFile(path.resolve(__dirname, '../dist/chrome-call.js'), code)
+      .then(() => {
         fs.writeFile(
           path.resolve(__dirname, '../dist/chrome-call.min.js'),
-          uglifyJS.minify(code, { output: { comments: /^!/ } }).code
+          uglifyJS.minify(fs.readFileSync(umdFilePath, 'utf8'), {
+            output: { comments: /^!/ }
+          }).code
         )
       })
 

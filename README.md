@@ -29,9 +29,9 @@ Download chrome-call.js from [unpkg](https://unpkg.com/chrome-call)([min version
 ```html
 <script src="path/to/chrome-call.js"></script>
 <!-- now you will get a global variable named chromeCall -->
-<sciprt>
+<script>
   typeof chromeCall // function
-</sciprt>
+</script>
 ```
 
 ## Usage
@@ -40,11 +40,11 @@ When you do:
 
 ```js
 const promise = new Promise((resolve, reject) => {
-  chrome.storage.local.get('key', items => {
+  chrome.tabs.sendMessage(tabId, message, options, response => {
     if (chrome.runtime.lastError) {
       reject(chrome.runtime.lastError)
     } else {
-      resolve(items)
+      resolve(response)
     }
   })
 })
@@ -53,27 +53,21 @@ const promise = new Promise((resolve, reject) => {
 It's equal to:
 
 ```js
-const promise = chromeCall(chrome.storage.local, 'get', 'key')
+const promise = chromeCall(chrome.tabs, 'sendMessage', tabId, message, options)
 ```
 
 That's really simple, right?
-
-Some Chrome JavaScript API methods has more than one arguments, then pass an array of params for the third argument:
-
-```js
-chromeCall(chrome.tabs, 'sendMessage', [tabId, message, options])
-```
 
 ### Multiple arguments in callback
 
 Most of chrome API only has zero or one argument in callback, but someone not, such as [chrome.hid.receive](https://developer.chrome.com/apps/hid#method-receive).
 
-In this situation, pass `true` as the fourth argument, then the value of promise will be an **real** Array:
+In this situation, pass `true` as the first argument, then the value of promise will be an **real** Array:
 
 ```js
 import chromeCall from 'chrome-call'
 
-chromeCall(chrome.hid, 'receive', connectionId, true).then(args => {
+chromeCall(true, chrome.hid, 'receive', connectionId).then(args => {
   Array.isArray(args) // true
   const reportId = args[0]
   const data = args[1]

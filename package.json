@@ -1,6 +1,6 @@
 {
   "name": "chrome-call",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "A really simple way to call the original chrome javascript API and return a Promise.",
   "main": "dist/chrome-call.common.js",
   "module": "dist/chrome-call.esm.js",
@@ -36,9 +36,6 @@
     "phantomjs-prebuilt": "^2.1.13",
     "rollup": "^0.65.0",
     "rollup-plugin-typescript2": "^0.16.1",
-    "tslint": "^5.8.0",
-    "tslint-config-prettier": "^1.6.0",
-    "tslint-config-standard": "^7.0.0",
     "typescript": "^3.0.1",
     "uglify-js": "^3.0.23"
   },

@@ -3,9 +3,9 @@ language: node_js
 node_js:
   - "node"
 
-script:
-  - npm run lint
-  - npm test
+cache: yarn
+
+after_success:
   - cat ./coverage/lcov/lcovonly | ./node_modules/coveralls/bin/coveralls.js
 
 notifications:
