@@ -1,25 +1,24 @@
-import chromeCall from '../src/index'
+import chromeCall, { FnObj } from '../src/index'
 import { polyfill } from 'es6-promise'
 
 polyfill()
 
-// @ts-ignore
 window.chrome = {
+  // @ts-ignore
   runtime: {}
 }
 
-interface FakeObj {
-  method: (this: FakeObj, key: string, cb: (...args: any[]) => any) => void
+interface FakeObj extends FnObj {
+  method: (key: string, cb: (...args: any[]) => any) => void
 }
 
 const fakeObj: FakeObj = {
-  // tslint:disable-next-line:no-empty
   method() {}
 }
 
 describe('chromeCall', () => {
   beforeEach(() => {
-    spyOn(fakeObj, 'method').and.callFake(function(key, cb) {
+    spyOn(fakeObj, 'method').and.callFake(function(this: FakeObj, key, cb) {
       expect(this).toBe(fakeObj)
       expect(key).toBe('a')
       expect(typeof cb).toBe('function')
@@ -31,7 +30,7 @@ describe('chromeCall', () => {
 
   it('若正常执行则 resolve promise', done => {
     chromeCall(fakeObj, 'method', ['a']).then(
-      value => {
+      (value: any) => {
         expect(value).toBe('a')
         done()
       },
@@ -48,7 +47,7 @@ describe('chromeCall', () => {
         chrome.runtime.lastError = undefined
         done.fail('没有进入 reject 分支')
       },
-      error => {
+      (error: Error) => {
         expect(error.message).toBe('hello error')
         chrome.runtime.lastError = undefined
         done()
@@ -58,7 +57,7 @@ describe('chromeCall', () => {
 
   it('最后一个参数是 true，则返回一个数组', done => {
     chromeCall(fakeObj, 'method', ['a'], true).then(
-      value => {
+      (value: any) => {
         expect(Array.isArray(value)).toBe(true)
         expect(value).toEqual(['a', 'b'])
         done()

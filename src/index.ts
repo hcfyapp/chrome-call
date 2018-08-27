@@ -1,8 +1,8 @@
-interface AnyFn<T> {
-  (this: T, ...args: any[]): any
+export interface FnObj {
+  [prop: string]: (...args: any[]) => any
 }
 
-export default function<T extends object>(
+export default function<T extends FnObj>(
   object: T,
   methodName: keyof T,
   args: any | any[] = [],
@@ -25,6 +25,6 @@ export default function<T extends object>(
         resolve(results[0])
       }
     })
-    ;(object[methodName] as AnyFn<T>).apply(object, args)
+    object[methodName].apply(object, args)
   })
 }
