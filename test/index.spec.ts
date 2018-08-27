@@ -1,4 +1,4 @@
-import chromeCall, { FnObj } from '../src/index'
+import chromeCall from '../src/index'
 import { polyfill } from 'es6-promise'
 
 polyfill()
@@ -8,7 +8,7 @@ window.chrome = {
   runtime: {}
 }
 
-interface FakeObj extends FnObj {
+interface FakeObj {
   method: (key: string, cb: (...args: any[]) => any) => void
 }
 
@@ -30,7 +30,7 @@ describe('chromeCall', () => {
 
   it('若正常执行则 resolve promise', done => {
     chromeCall(fakeObj, 'method', ['a']).then(
-      (value: any) => {
+      value => {
         expect(value).toBe('a')
         done()
       },
@@ -57,7 +57,7 @@ describe('chromeCall', () => {
 
   it('最后一个参数是 true，则返回一个数组', done => {
     chromeCall(fakeObj, 'method', ['a'], true).then(
-      (value: any) => {
+      value => {
         expect(Array.isArray(value)).toBe(true)
         expect(value).toEqual(['a', 'b'])
         done()

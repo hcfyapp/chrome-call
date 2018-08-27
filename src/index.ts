@@ -1,13 +1,25 @@
-export interface FnObj {
-  [prop: string]: (...args: any[]) => any
+interface A {
+  [prop: string]: any
 }
 
-export default function<T extends FnObj>(
+function chromeCall<T extends A>(
+  object: T,
+  methodName: keyof T,
+  args: any | any[],
+  returnArray: true
+): Promise<any[]>
+function chromeCall<T extends A>(
+  object: T,
+  methodName: keyof T,
+  args: any | any[],
+  returnArray?: boolean
+): Promise<any>
+function chromeCall<T extends A>(
   object: T,
   methodName: keyof T,
   args: any | any[] = [],
   returnArray?: boolean
-): Promise<any> {
+) {
   return new Promise((resolve, reject) => {
     if (!Array.isArray(args)) {
       args = [args]
@@ -25,6 +37,8 @@ export default function<T extends FnObj>(
         resolve(results[0])
       }
     })
-    object[methodName].apply(object, args)
+    ;(object[methodName] as Function).apply(object, args)
   })
 }
+
+export default chromeCall
