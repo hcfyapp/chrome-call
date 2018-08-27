@@ -1,6 +1,6 @@
 {
   "name": "chrome-call",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A really simple way to call the original chrome javascript API and return a Promise.",
   "main": "dist/chrome-call.common.js",
   "module": "dist/chrome-call.esm.js",
