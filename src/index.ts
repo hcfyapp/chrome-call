@@ -9,6 +9,12 @@ function chromeCall<T extends A>(
   ...args: any[]
 ): Promise<any[]>
 function chromeCall<T extends A>(
+  returnArray: false,
+  object: T,
+  methodName: keyof T,
+  ...args: any[]
+): Promise<any>
+function chromeCall<T extends A>(
   object: T,
   methodName: keyof T,
   ...args: any[]
@@ -19,7 +25,7 @@ function chromeCall<T extends A>(
   ...args: any[]
 ) {
   let returnArray: boolean
-  if (object === true) {
+  if (typeof object === 'boolean') {
     returnArray = object
     object = methodName as T
     methodName = args.shift() as keyof T
